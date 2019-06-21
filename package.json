@@ -31,7 +31,8 @@
   },
   "engines": {
     "node": "8.4.0",
-    "npm": "6.1.0"
+    "npm": "6.1.0",
+    "yarn": "1.7.0"
   },
   "keywords": [],
   "author": "",
