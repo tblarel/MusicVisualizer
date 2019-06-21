@@ -1,0 +1,141 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, or any plugin's
+ * vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any other CSS/SCSS
+ * files in this directory. Styles in this file should be added after the last require_* statement.
+ * It is generally better to create a new file per style scope.
+ *
+ *= require_tree .
+ *= require_self
+ */
+
+ :root{
+  --bgColor : rgb(0, 0, 0);
+  --bgColorLight : rgb(30, 30, 44);
+  --textColor : rgb(232, 232, 255);
+  --textColorDark : hsla(242, 36%, 0%, 1);
+  --buttonColor: rgb(45, 218, 106);
+  --buttonColorDark: rgb(3, 185, 67);
+  --shadowColorFaint: hsla(0, 0%, 0%, 0.2);
+}
+
+::selected{
+  color: var(--textColorDark);
+}
+
+html, body{
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  height: 100vh;
+  width: 100vw;
+  background-color: var(--bgColor);
+  background: linear-gradient(135deg, var(--bgColor), var(--bgColorLight));
+  color: var(--textColor);
+  font-family: 'Saira', sans-serif;
+  position: relative;
+}
+
+*{
+  box-sizing: border-box;
+  transition: all 0.25s cubic-bezier(0.45, 0.5, 0.25, 1.25);
+}
+
+#canvas {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+
+audio {
+  position: fixed;
+  left:10%;
+  right: 10%;
+  bottom: 20px;
+  width: 80%;
+  filter: sepia(0%) saturate(50%) grayscale(1) contrast(100%) invert(100%);
+}
+
+audio.active{
+  bottom: 10px;
+}
+
+#thefile{
+  width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: 1;
+}
+
+label.file{
+  display: inline-block;
+  position: absolute;
+  left: 50%;
+  top: 40%;
+  transform: translate3d(-50%, -50%, 0);
+  padding: 1rem 2rem;
+  border-radius: 50px;
+  background: var(--buttonColorDark);
+  color: var(--textColor);
+  font-size: 1.25em;
+  font-weight: 700;
+  box-shadow: 0 20px 60px var(--shadowColorFaint);
+  cursor: pointer;
+}
+
+label.search{
+  display: inline-block;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate3d(-50%, -50%, 0);
+  padding: 1rem 2rem;
+  border-radius: 50px;
+  background: var(--buttonColorDark);
+  color: var(--textColor);
+  font-size: 1.25em;
+  font-weight: 700;
+  box-shadow: 0 20px 60px var(--shadowColorFaint);
+  cursor: pointer;
+}
+
+
+label.file:hover{
+    background: var(--buttonColor);
+    transform: translate3d(-50%, -55%, 0);
+}
+
+label.search:hover{
+    background: var(--buttonColor);
+    transform: translate3d(-50%, -55%, 0);
+}
+
+label.file:active{
+    background: var(--buttonColorDark);
+    transform: translate3d(-50%, -45%, 0);
+}
+
+label.file.normal{
+  transform: translate3d(10%, 50%, 0);
+  padding: .8rem 2rem;
+  font-size: 1rem;
+  top: 0;
+  left: 0;
+}
+
+label.search.normal{
+  transform: translate3d(10%, 50%, 0);
+  padding: .8rem 2rem;
+  font-size: 1rem;
+  top: 0;
+  left: 65%;
+}
