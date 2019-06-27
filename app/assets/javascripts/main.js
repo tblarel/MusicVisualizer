@@ -177,8 +177,8 @@ var visualizer = function () {
             var upperMax = max(upperFreqs);
             var upperAvg = avg(upperFreqs);
 
-            var lowerMaxFreq = lowerMax / lowerHalfArray.length;
-            var upperAvgFreq = upperAvg / upperHalfArray.length;
+            var lowerMaxFreq = lowerMax / lowerFreqs.length;
+            var upperAvgFreq = upperAvg / upperFreqs.length;
             // var lowerAvgFr = lowerAvg / lowerHalfArray.length;
             // var upperMaxFr = upperMax / upperHalfArray.length;
 
