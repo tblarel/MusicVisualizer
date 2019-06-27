@@ -168,30 +168,28 @@ var visualizer = function () {
         function render() {
             analyzer.getByteFrequencyData(dataArray);
 
-            var lowerHalfArray = dataArray.slice(0, (dataArray.length / 2) - 1);
-            var upperHalfArray = dataArray.slice((dataArray.length / 2) - 1, dataArray.length - 1);
+            var lowerFreqs = dataArray.slice(0, (dataArray.length / 2) - 1);
+            var upperFreqs = dataArray.slice((dataArray.length / 2) - 1, dataArray.length - 1);
 
             var overallAvg = avg(dataArray);
-            var lowerMax = max(lowerHalfArray);
-            var lowerAvg = avg(lowerHalfArray);
-            var upperMax = max(upperHalfArray);
-            var upperAvg = avg(upperHalfArray);
+            var lowerMax = max(lowerFreqs);
+            var lowerAvg = avg(lowerFreqs);
+            var upperMax = max(upperFreqs);
+            var upperAvg = avg(upperFreqs);
 
-            var lowerMaxFr = lowerMax / lowerHalfArray.length;
-            var lowerAvgFr = lowerAvg / lowerHalfArray.length;
-            var upperMaxFr = upperMax / upperHalfArray.length;
-            var upperAvgFr = upperAvg / upperHalfArray.length;
+            var lowerMaxFreq = lowerMax / lowerHalfArray.length;
+            var upperAvgFreq = upperAvg / upperHalfArray.length;
+            // var lowerAvgFr = lowerAvg / lowerHalfArray.length;
+            // var upperMaxFr = upperMax / upperHalfArray.length;
 
-            // makeRoughPlane(plane1, modulate(upperAvgFr, 0, 1, .2, 4));
-            // makeRoughPlane(plane2, modulate(lowerMaxFr, 0, 1, .2, 4));
 
-            makeRoughBall(ball, modulate(Math.pow(lowerMaxFr, 0.8), 0, 1, 0, 1), modulate(upperAvgFr, 0, 1, 0, 1.5));
-            makeRoughBall(ball2, modulate(Math.pow(lowerMaxFr, 0.8), 0, 1, 0, 1.4), modulate(upperAvgFr, 0, 1, 0, 2));
-            makeRoughBall(ball3, modulate(Math.pow(lowerMaxFr, 0.8), 0, 1, 0, 1.8), modulate(upperAvgFr, 0, 1, 0, 2.5));
-            makeRoughBall(ball4, modulate(Math.pow(lowerMaxFr, 0.8), 0, 1, 0, 2.2), modulate(upperAvgFr, 0, 1, 0, 3));
-            makeRoughBall(ball5, modulate(Math.pow(lowerMaxFr, 0.8), 0, 1, 0, 2.6), modulate(upperAvgFr, 0, 1, 0, 3.5));
-            makeRoughBall(ball6, modulate(Math.pow(lowerMaxFr, 0.8), 0, 1, 0, 3.0), modulate(upperAvgFr, 0, 1, 0, 4));
-            makeRoughBall(earth, modulate(Math.pow(lowerMaxFr, 0.8), 0, 1, 0.1, 0.2), modulate(upperAvgFr, 0, 1, 0, 0.2));
+            makeRough(ball, modulate(Math.pow(lowerMaxFreq, 0.8), 0, 1, 0, 1), modulate(upperAvgFreq, 0, 1, 0, 1.5));
+            makeRough(ball2, modulate(Math.pow(lowerMaxFreq, 0.8), 0, 1, 0, 1.4), modulate(upperAvgFreq, 0, 1, 0, 2));
+            makeRough(ball3, modulate(Math.pow(lowerMaxFreq, 0.8), 0, 1, 0, 1.8), modulate(upperAvgFreq, 0, 1, 0, 2.5));
+            makeRough(ball4, modulate(Math.pow(lowerMaxFreq, 0.8), 0, 1, 0, 2.2), modulate(upperAvgFreq, 0, 1, 0, 3));
+            makeRough(ball5, modulate(Math.pow(lowerMaxFreq, 0.8), 0, 1, 0, 2.6), modulate(upperAvgFreq, 0, 1, 0, 3.5));
+            makeRough(ball6, modulate(Math.pow(lowerMaxFreq, 0.8), 0, 1, 0, 3.0), modulate(upperAvgFreq, 0, 1, 0, 4));
+            makeRough(earth, modulate(Math.pow(lowerMaxFreq, 0.8), 0, 1, 0.1, 0.2), modulate(upperAvgFreq, 0, 1, 0, 0.2));
 
             group.rotation.y += 0.002;
 
@@ -206,35 +204,20 @@ var visualizer = function () {
             renderer.setSize(window.innerWidth, window.innerHeight);
         }
 
-        function makeRoughBall(mesh, bassFr, treFr) {
-            mesh.geometry.vertices.forEach(function (vertex, i) {
-                var offset = mesh.geometry.parameters.radius;
-                var amp = 6;
+        function makeRough(mesh, bassFr, treFr) {
+            mesh.geometry.vertices.forEach(function (vtx, i) {
+                var radius = mesh.geometry.parameters.radius;
+                var amplitude = 6;
                 var time = window.performance.now();
-                vertex.normalize();
+                vtx.normalize();
                 var rf = 0.00001;
-                var distance = (offset + bassFr) + noise.noise3D(vertex.x + time * rf * 7,
-                    vertex.y + time * rf * 8,
-                    vertex.z + time * rf * 9) * amp * treFr;
-                vertex.multiplyScalar(distance);
+                var distance = (radius + bassFr) + noise.noise3D(vtx.x + time * rf * 7,
+                    vtx.y + time * rf * 8,
+                    vtx.z + time * rf * 9) * amplitude * treFr;
+                vtx.multiplyScalar(distance);
             });
-            mesh.geometry.verticesNeedUpdate = true;
             mesh.geometry.normalsNeedUpdate = true;
-            mesh.geometry.computeVertexNormals();
-            mesh.geometry.computeFaceNormals();
-        }
-
-        function makeRoughPlane(mesh, distortionFr) {
-            mesh.geometry.vertices.forEach(function (vertex, i) {
-                var amp = .8;
-                var time = Date.now();
-                var distance = (noise.noise2D(
-                    vertex.x + time * 0.0002,
-                    vertex.y + time * 0.0005) + 0) * distortionFr * amp;
-                vertex.z = distance;
-            });
             mesh.geometry.verticesNeedUpdate = true;
-            mesh.geometry.normalsNeedUpdate = true;
             mesh.geometry.computeVertexNormals();
             mesh.geometry.computeFaceNormals();
         }
