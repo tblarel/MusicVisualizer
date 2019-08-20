@@ -68,7 +68,7 @@ var visualizer = function () {
 
         var innerNormalMaterial = new THREE.MeshNormalMaterial({
             transparent: true,
-            color: 0x31ACCE,
+            // color: 0x31ACCE,
             transparent: true,
             opacity: 0.1,
         })
@@ -117,7 +117,7 @@ var visualizer = function () {
         var earth = new THREE.Mesh(
             new THREE.SphereGeometry(9, 32, 32),
             new THREE.MeshPhongMaterial({
-                map: loader.load('assets/8k_earth_daymap.jpg'),
+                map: loader.load('assets/2k_earth_daymap.jpg'),
                 bumpMap: loader.load('assets/elev_bump_4k.jpg'),
                 bumpScale: 0.010,
                 specularMap: loader.load('assets/water_4k.png'),
